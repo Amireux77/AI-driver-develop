@@ -2,7 +2,7 @@
 
 面向 **<数据库>** 与 **Oracle / PostgreSQL / MySQL** 的兼容性测试：维护测试文档与脚本，用 Java 工具在四库上跑矩阵并生成对比报告。
 
-**三条线**：`docs/` 定义测什么 → `matrix/` + `run.ps1` 做四库对比 → `scripts/` 在虚谷主测库执行单库用例（XGFit / 客户端）。
+**三条线**：`docs/` 定义测什么 → `matrix/` + `run.ps1` 做四库对比 → `scripts/` 在<数据库>主测库执行单库用例（XGFit / 客户端）。
 
 ---
 
@@ -35,7 +35,7 @@ AI-driver-develop/                   # 项目根（仓库根目录）
 │   └── update_probe_extra.json
 │
 ├── lib/jdbc/
-│   └── xugu-jdbc-*.jar                # 虚谷驱动（必放，勿提交）
+│   └── xugu-jdbc-*.jar                # <数据库>驱动（必放，勿提交）
 │
 ├── db-compat-tester/                  # Java / Maven 四库对比工具
 │   ├── README.md
@@ -44,7 +44,7 @@ AI-driver-develop/                   # 项目根（仓库根目录）
 │   │   └── db-compat-tester-1.0.0-jar-with-dependencies.jar
 │   └── src/main/java/com/dbcompat/    # Main、DatabaseRunner、ReportGenerator 等
 │
-├── scripts/                           # 虚谷主测 SQL（XGFit / 客户端）
+├── scripts/                           # <数据库>主测 SQL（XGFit / 客户端）
 │   ├── INTERVAL_TYPE/                 # INTERVAL 类型 + 13 变体 + 各影响域（体量大）
 │   │   ├── 01-TableField/ …           #   表字段、DML/DQL 等子目录
 │   │   ├── 02-StoredPeodecure/ …
@@ -52,7 +52,7 @@ AI-driver-develop/                   # 项目根（仓库根目录）
 │   │   ├── 04-View.sql … 19-Expression.sql
 │   │   └── 06-Index.sql 等            #   根目录另含 06～18、20 等域脚本
 │   ├── INSERT_TYPE/
-│   │   ├── implemented/               # 已实现需求基准 SQL（虚谷官方语法）
+│   │   ├── implemented/               # 已实现需求基准 SQL（<数据库>官方语法）
 │   │   │   └── 01-Val.sql
 │   │   └── gap/                       # 缺口 / GR 等价路径 SQL
 │   └── UPDATE_TYPE/                   # 同上 implemented / gap（待补充）
@@ -97,7 +97,7 @@ run-connect.ps1  ──▶  javac + java ConnectivityProbe（控制台 + reports
 
 #### 2.1.2 如何使用（跑矩阵）
 
-运行前请确认：`config/db.properties` 已配置、`lib/jdbc/` 下有虚谷 JAR、`db-compat-tester/target/*-jar-with-dependencies.jar` 存在（见 [db-compat-tester/README.md](db-compat-tester/README.md)）。
+运行前请确认：`config/db.properties` 已配置、`lib/jdbc/` 下有<数据库> JAR、`db-compat-tester/target/*-jar-with-dependencies.jar` 存在（见 [db-compat-tester/README.md](db-compat-tester/README.md)）。
 
 | 方式                   | 操作                                  | 适用场景                   | 说明                                                                                                |
 |------------------------|---------------------------------------|----------------------------|-----------------------------------------------------------------------------------------------------|
@@ -192,9 +192,9 @@ JSON 字段细则见 [db-compat-tester/README.md](db-compat-tester/README.md#测
 | PostgreSQL   |      否      | 已打入 fat jar                                                                             |
 | Oracle       |      否      | 已打入 fat jar                                                                             |
 
-重新执行 `mvn package` 打包 fat jar 时，须将虚谷 JAR 安装到本地 Maven 仓库（见下文 **2.4.1** 与 [db-compat-tester/README.md](db-compat-tester/README.md)）。
+重新执行 `mvn package` 打包 fat jar 时，须将<数据库> JAR 安装到本地 Maven 仓库（见下文 **2.4.1** 与 [db-compat-tester/README.md](db-compat-tester/README.md)）。
 
-#### 2.4.1 更换虚谷驱动后须修改什么
+#### 2.4.1 更换<数据库>驱动后须修改什么
 
 日常 `run.ps1` 与 Maven/IDE **各用一条路径**，换驱动时按实际用途对照下表（**完整命令与排错**见 [db-compat-tester/README.md](db-compat-tester/README.md) 步骤 1～5）。
 
@@ -249,7 +249,7 @@ Maven 工程，核心能力：
 
 1. 按主题阅读 `docs/<主题>/` 下 **可行性 → 需求 → 测试方案 → 用例设计**，从用例设计表取得 `XG-TYPE-<主题>-<域代码>-<序号>`。  
 2. 阅读 **[docs/meta/SQL_SCRIPT_STYLE.md](docs/meta/SQL_SCRIPT_STYLE.md)**（§0 范围；§2.1 **implemented/gap** 双轨；§3～7 格式）。  
-3. 阅读 **[docs/framework/00-通用模板-00-Prompt-SQL生成.md](docs/framework/00-通用模板-00-Prompt-SQL生成.md)**（须同时写基准与缺口；`implemented/` 对照 [虚谷官方文档](https://docs.xugudb.com/)）。  
+3. 阅读 **[docs/framework/00-通用模板-00-Prompt-SQL生成.md](docs/framework/00-通用模板-00-Prompt-SQL生成.md)**（须同时写基准与缺口；`implemented/` 对照 [<数据库>官方文档](https://docs.xugudb.com/)）。  
 4. 在项目根用脚手架生成骨架：
 
 ```powershell
@@ -304,7 +304,7 @@ Maven 工程，核心能力：
 copy config\db.properties.example config\db.properties
 # 编辑四库地址与密码
 
-# 2. 虚谷 JDBC 放入 lib\jdbc\
+# 2. <数据库> JDBC 放入 lib\jdbc\
 
 # 3. 运行矩阵
 .\run.ps1 insert_verification.json
@@ -316,7 +316,7 @@ copy config\db.properties.example config\db.properties
 
 ## 4. 使用方式
 
-本项目分三条线协作：**文档** (`docs/`) 定义测什么 , **矩阵** (`matrix/`) + **`run.ps1`** 做四库对比 , **`scripts/`** 在虚谷单库执行全量用例。多数 Markdown / SQL **不会自动运行** ; 需要人在终端执行 `run.ps1` , 或在 Cursor **Agent 模式**下让 AI 代跑。
+本项目分三条线协作：**文档** (`docs/`) 定义测什么 , **矩阵** (`matrix/`) + **`run.ps1`** 做四库对比 , **`scripts/`** 在<数据库>单库执行全量用例。多数 Markdown / SQL **不会自动运行** ; 需要人在终端执行 `run.ps1` , 或在 Cursor **Agent 模式**下让 AI 代跑。
 
 ### 4.0 具体操作流程
 
@@ -324,12 +324,12 @@ copy config\db.properties.example config\db.properties
 
 ### 4.1 运行前准备（人工一次性）
 
-| 项       | 路径                                                  | 说明                                                       |
-|----------|-------------------------------------------------------|------------------------------------------------------------|
-| 连接配置 | `config/db.properties`                                | 从 `config/db.properties.example` 复制并填写四库地址与密码 |
-| 虚谷驱动 | `lib/jdbc/xugu-jdbc-*.jar`                            | 必放 , `run.ps1` 会加入 classpath                          |
-| Fat JAR  | `db-compat-tester/target/*-jar-with-dependencies.jar` | 若无 , 在 `db-compat-tester/` 执行 `mvn package`           |
-| JDK      | 11+                                                   | `java -version` 确认                                       |
+| 项           | 路径                                                  | 说明                                                       |
+|--------------|-------------------------------------------------------|------------------------------------------------------------|
+| 连接配置     | `config/db.properties`                                | 从 `config/db.properties.example` 复制并填写四库地址与密码 |
+| <数据库>驱动 | `lib/jdbc/xugu-jdbc-*.jar`                            | 必放 , `run.ps1` 会加入 classpath                          |
+| Fat JAR      | `db-compat-tester/target/*-jar-with-dependencies.jar` | 若无 , 在 `db-compat-tester/` 执行 `mvn package`           |
+| JDK          | 11+                                                   | `java -version` 确认                                       |
 
 环境就绪后 , 可在本机终端执行 `.\run-connect.ps1` 与 `.\run.ps1 <矩阵名>.json` , 也可将下文提示词粘贴到 Cursor AI 输入框 , 由 AI 读取配置与矩阵并代跑。
 
@@ -340,7 +340,7 @@ copy config\db.properties.example config\db.properties
 | 入口脚本          | `run.ps1` , `run-connect.ps1`            |         是         | 你或 AI（终端）                            |
 | 配置 / 矩阵       | `config/db.properties` , `matrix/*.json` | 否（被 Java 读取） | `run.ps1` → `Main.java`                    |
 | 测试文档 / Prompt | `docs/` , `docs/framework/*-Prompt*`     |         否         | 人 + AI 编辑                               |
-| 虚谷脚本          | `scripts/**/*.sql`                       |     在库上执行     | 你 / XGFit / 客户端（AI 通常无法连内网库） |
+| <数据库>脚本      | `scripts/**/*.sql`                       |     在库上执行     | 你 / XGFit / 客户端（AI 通常无法连内网库） |
 
 **调用链** : `run.ps1` → `javac` 编译 → `com.dbcompat.Main` → 读 `config/` + `matrix/` → 连四库 → 写 `reports/*.md`。
 
@@ -391,7 +391,7 @@ copy config\db.properties.example config\db.properties
 - 跑完后打开 reports/ 最新 INSERT VERIFICATION_report_*.md，用表格总结 mysql/pg/oracle/xugu 成功失败数
 ```
 
-配置与虚谷 jar 已就绪时 , 可用最短版 :
+配置与<数据库> jar 已就绪时 , 可用最短版 :
 
 ```text
 请在项目根自动检查环境后执行 run-connect.ps1，再执行 run.ps1 insert_verification.json。
@@ -452,23 +452,23 @@ copy config\db.properties.example config\db.properties
 |:----:|----------------------------------------------------------|-------------------------------|
 |  1   | `README.md`                                              | 目录与命令                    |
 |  2   | `config/db.properties`                                   | 四库连接（无则读 `.example`） |
-|  3   | `lib/jdbc/`                                              | 虚谷驱动                      |
+|  3   | `lib/jdbc/`                                              | <数据库>驱动                  |
 |  4   | `db-compat-tester/target/*-jar-with-dependencies.jar`    | 是否可运行                    |
 |  5   | `matrix/<矩阵名>.json`                                   | 用例与 SQL                    |
 |  6   | [db-compat-tester/README.md](db-compat-tester/README.md) | JSON 字段说明                 |
 |  7   | `run.ps1` / `run-connect.ps1`                            | 执行入口                      |
 |  8   | `reports/*.md`                                           | 跑完后解读结果                |
 
-写新主题文档时再读 `docs/framework/*-Prompt*` 与 [docs/INDEX.md](docs/INDEX.md) ; 查虚谷语法可用 `.cursor/skills/xugudb-*`。
+写新主题文档时再读 `docs/framework/*-Prompt*` 与 [docs/INDEX.md](docs/INDEX.md) ; 查<数据库>语法可用 `.cursor/skills/xugudb-*`。
 
 ### 4.11 AI 不会自动做的事（需在提示中单独说明）
 
-| 需求                         | 提示中应写明                                       |
-|------------------------------|----------------------------------------------------|
-| 在虚谷执行 `scripts/` 下 SQL | 「我无法连库 , 只检查/生成 SQL」或自行在客户端执行 |
-| 修改连接密码                 | 「不要改 db.properties」                           |
-| 提交 Git                     | 「不要 commit / push」                             |
-| 连续跑多个矩阵               | 「依次执行 run.ps1 a.json 和 b.json」              |
+| 需求                             | 提示中应写明                                       |
+|----------------------------------|----------------------------------------------------|
+| 在<数据库>执行 `scripts/` 下 SQL | 「我无法连库 , 只检查/生成 SQL」或自行在客户端执行 |
+| 修改连接密码                     | 「不要改 db.properties」                           |
+| 提交 Git                         | 「不要 commit / push」                             |
+| 连续跑多个矩阵                   | 「依次执行 run.ps1 a.json 和 b.json」              |
 
 ---
 
