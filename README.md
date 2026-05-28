@@ -1,6 +1,6 @@
-# XuguDB 兼容性测试项目
+# <数据库> 兼容性测试项目
 
-面向 **XuguDB** 与 **Oracle / PostgreSQL / MySQL** 的兼容性测试：维护测试文档与脚本，用 Java 工具在四库上跑矩阵并生成对比报告。
+面向 **<数据库>** 与 **Oracle / PostgreSQL / MySQL** 的兼容性测试：维护测试文档与脚本，用 Java 工具在四库上跑矩阵并生成对比报告。
 
 **三条线**：`docs/` 定义测什么 → `matrix/` + `run.ps1` 做四库对比 → `scripts/` 在虚谷主测库执行单库用例（XGFit / 客户端）。
 
@@ -67,7 +67,7 @@ AI-driver-develop/                   # 项目根（仓库根目录）
 │   ├── update/                        # UPDATE-01～04
 │   └── interval/                      # INTERVAL-01～05、Prompt
 │
-└── .cursor/skills/                    # XuguDB AI 技能集（xugudb-sql、xugudb-jdbc 等）
+└── .cursor/skills/                    # <数据库> AI 技能集（xugudb-sql、xugudb-jdbc 等）
 ```
 
 ---
@@ -141,10 +141,10 @@ run.bat update_verification.json
 
 存放四库 JDBC 连接信息，供 `run.ps1` 与 Java 程序读取。
 
-| 文件                    | 说明                                                 |
-|-------------------------|------------------------------------------------------|
-| `db.properties.example` | 模板，含 MySQL / PostgreSQL / Oracle / XuguDB 占位项 |
-| `db.properties`         | 真实 IP、用户名、密码；**勿提交 Git**                |
+| 文件                    | 说明                                                   |
+|-------------------------|--------------------------------------------------------|
+| `db.properties.example` | 模板，含 MySQL / PostgreSQL / Oracle / <数据库> 占位项 |
+| `db.properties`         | 真实 IP、用户名、密码；**勿提交 Git**                  |
 
 首次使用：
 
@@ -185,12 +185,12 @@ JSON 字段细则见 [db-compat-tester/README.md](db-compat-tester/README.md#测
 
 运行时 classpath 依赖目录。`run.ps1` 会自动加载 `lib\jdbc\*`。
 
-| 驱动       | 是否必须放入 | 说明                                                                                       |
-|------------|:------------:|--------------------------------------------------------------------------------------------|
-| **XuguDB** |    **是**    | 不在 Maven 中央仓库；示例名 `xugu-jdbc-12.3.8-....jar`，驱动类 `com.xugu.cloudjdbc.Driver` |
-| MySQL      |      否      | 已打入 fat jar                                                                             |
-| PostgreSQL |      否      | 已打入 fat jar                                                                             |
-| Oracle     |      否      | 已打入 fat jar                                                                             |
+| 驱动         | 是否必须放入 | 说明                                                                                       |
+|--------------|:------------:|--------------------------------------------------------------------------------------------|
+| **<数据库>** |    **是**    | 不在 Maven 中央仓库；示例名 `xugu-jdbc-12.3.8-....jar`，驱动类 `com.xugu.cloudjdbc.Driver` |
+| MySQL        |      否      | 已打入 fat jar                                                                             |
+| PostgreSQL   |      否      | 已打入 fat jar                                                                             |
+| Oracle       |      否      | 已打入 fat jar                                                                             |
 
 重新执行 `mvn package` 打包 fat jar 时，须将虚谷 JAR 安装到本地 Maven 仓库（见下文 **2.4.1** 与 [db-compat-tester/README.md](db-compat-tester/README.md)）。
 
@@ -234,7 +234,7 @@ Maven 工程，核心能力：
 
 ### 2.6 `scripts/` — Xugu 主测脚本
 
-存放面向 **XuguDB 主测库** 的可执行脚本（`.sql`、`.wiki` 等），与 `docs/` 中用例设计里的脚本路径对应。
+存放面向 **<数据库> 主测库** 的可执行脚本（`.sql`、`.wiki` 等），与 `docs/` 中用例设计里的脚本路径对应。
 
 | 子目录           | 状态   | 说明                                                                                   |
 |------------------|--------|----------------------------------------------------------------------------------------|
