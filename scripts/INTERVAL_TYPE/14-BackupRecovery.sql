@@ -1,0 +1,480 @@
+!4 XG-TYPE-INTERVAL-BACKUP-001 库级备份恢复
+//创建备份库
+CREATE DATABASE IF NOT EXISTS DB_BACKUP;
+
+USE DB_BACKUP;
+
+//创建表
+CREATE TABLE t_backup_001a (id INT , c1 INTERVAL YEAR);
+CREATE TABLE t_backup_001b (id INT , c1 INTERVAL MONTH);
+CREATE TABLE t_backup_001c (id INT , c1 INTERVAL DAY);
+CREATE TABLE t_backup_001d (id INT , c1 INTERVAL HOUR);
+CREATE TABLE t_backup_001e (id INT , c1 INTERVAL MINUTE);
+CREATE TABLE t_backup_001f (id INT , c1 INTERVAL SECOND);
+CREATE TABLE t_backup_001g (id INT , c1 INTERVAL YEAR TO MONTH);
+CREATE TABLE t_backup_001h (id INT , c1 INTERVAL DAY TO HOUR);
+CREATE TABLE t_backup_001i (id INT , c1 INTERVAL DAY TO MINUTE);
+CREATE TABLE t_backup_001j (id INT , c1 INTERVAL DAY TO SECOND);
+CREATE TABLE t_backup_001k (id INT , c1 INTERVAL HOUR TO MINUTE);
+CREATE TABLE t_backup_001l (id INT , c1 INTERVAL HOUR TO SECOND);
+CREATE TABLE t_backup_001m (id INT , c1 INTERVAL MINUTE TO SECOND);
+
+//插入数据
+INSERT INTO t_backup_001a VALUES (1 , '9');
+INSERT INTO t_backup_001b VALUES (1 , '9');
+INSERT INTO t_backup_001c VALUES (1 , '9');
+INSERT INTO t_backup_001d VALUES (1 , '9');
+INSERT INTO t_backup_001e VALUES (1 , '9');
+INSERT INTO t_backup_001f VALUES (1 , '9');
+INSERT INTO t_backup_001g VALUES (1 , '9');
+INSERT INTO t_backup_001h VALUES (1 , '9');
+INSERT INTO t_backup_001i VALUES (1 , '9');
+INSERT INTO t_backup_001j VALUES (1 , '9');
+INSERT INTO t_backup_001k VALUES (1 , '9');
+INSERT INTO t_backup_001l VALUES (1 , '9');
+INSERT INTO t_backup_001m VALUES (1 , '9');
+
+//备份数据
+BACKUP DATABASE TO '/BACKUP/DATEDB_BAK.EXP';
+
+USE SYSTEM;
+
+//删除备份库
+DROP DATABASE DB_BACKUP;
+
+//创建恢复库
+CREATE DATABASE IF NOT EXISTS DB_RESTORE;
+
+USE DB_RESTORE;
+
+//恢复数据
+RESTORE DATABASE DB_BACKUP FROM '/BACKUP/DATEDB_BAK.EXP';
+
+//结果查询
+<预期结果 : 1 | 9-0>
+SELECT * FROM t_backup_001a;
+<预期结果 : 1 | 0-9>
+SELECT * FROM t_backup_001b;
+<预期结果 : 1 | 9 0:00:00>
+SELECT * FROM t_backup_001c;
+<预期结果 : 1 | 9:00:00>
+SELECT * FROM t_backup_001d;
+<预期结果 : 1 | 0:09:00>
+SELECT * FROM t_backup_001e;
+<预期结果 : 1 | 0:00:09>
+SELECT * FROM t_backup_001f;
+<预期结果 : 1 | 0-9>
+SELECT * FROM t_backup_001g;
+<预期结果 : 1 | 9:00:00>
+SELECT * FROM t_backup_001h;
+<预期结果 : 1 | 0:09:00>
+SELECT * FROM t_backup_001i;
+<预期结果 : 1 | 0:00:09>
+SELECT * FROM t_backup_001j;
+<预期结果 : 1 | 0:09:00>
+SELECT * FROM t_backup_001k;
+<预期结果 : 1 | 0:00:09>
+SELECT * FROM t_backup_001l;
+<预期结果 : 1 | 0:00:09>
+SELECT * FROM t_backup_001m;
+
+USE SYSTEM;
+
+DROP DATABASE DB_RESTORE;
+
+!4 XG-TYPE-INTERVAL-BACKUP-002 用户级备份恢复
+//创建备份库
+CREATE DATABASE DB_BACKUP;
+
+USE DB_BACKUP;
+
+//创建用户
+CREATE USER u_back_a IDENTIFIED BY 'abc!1234';
+CREATE USER u_back_b IDENTIFIED BY 'abc!1234';
+CREATE USER u_back_c IDENTIFIED BY 'abc!1234';
+CREATE USER u_back_d IDENTIFIED BY 'abc!1234';
+CREATE USER u_back_e IDENTIFIED BY 'abc!1234';
+CREATE USER u_back_f IDENTIFIED BY 'abc!1234';
+CREATE USER u_back_g IDENTIFIED BY 'abc!1234';
+CREATE USER u_back_h IDENTIFIED BY 'abc!1234';
+CREATE USER u_back_i IDENTIFIED BY 'abc!1234';
+CREATE USER u_back_j IDENTIFIED BY 'abc!1234';
+CREATE USER u_back_k IDENTIFIED BY 'abc!1234';
+CREATE USER u_back_l IDENTIFIED BY 'abc!1234';
+CREATE USER u_back_m IDENTIFIED BY 'abc!1234';
+
+//创建表
+CREATE TABLE u_back_a.t_back_002a (id INT , c1 INTERVAL YEAR);
+CREATE TABLE u_back_b.t_back_002b (id INT , c1 INTERVAL MONTH);
+CREATE TABLE u_back_c.t_back_002c (id INT , c1 INTERVAL DAY);
+CREATE TABLE u_back_d.t_back_002d (id INT , c1 INTERVAL HOUR);
+CREATE TABLE u_back_e.t_back_002e (id INT , c1 INTERVAL MINUTE);
+CREATE TABLE u_back_f.t_back_002f (id INT , c1 INTERVAL SECOND);
+CREATE TABLE u_back_g.t_back_002g (id INT , c1 INTERVAL YEAR TO MONTH);
+CREATE TABLE u_back_h.t_back_002h (id INT , c1 INTERVAL DAY TO HOUR);
+CREATE TABLE u_back_i.t_back_002i (id INT , c1 INTERVAL DAY TO MINUTE);
+CREATE TABLE u_back_j.t_back_002j (id INT , c1 INTERVAL DAY TO SECOND);
+CREATE TABLE u_back_k.t_back_002k (id INT , c1 INTERVAL HOUR TO MINUTE);
+CREATE TABLE u_back_l.t_back_002l (id INT , c1 INTERVAL HOUR TO SECOND);
+CREATE TABLE u_back_m.t_back_002m (id INT , c1 INTERVAL MINUTE TO SECOND);
+
+//插入数据
+INSERT INTO u_back_a.t_back_002a VALUES (1 , '9');
+INSERT INTO u_back_b.t_back_002b VALUES (1 , '9');
+INSERT INTO u_back_c.t_back_002c VALUES (1 , '9');
+INSERT INTO u_back_d.t_back_002d VALUES (1 , '9');
+INSERT INTO u_back_e.t_back_002e VALUES (1 , '9');
+INSERT INTO u_back_f.t_back_002f VALUES (1 , '9');
+INSERT INTO u_back_g.t_back_002g VALUES (1 , '9');
+INSERT INTO u_back_h.t_back_002h VALUES (1 , '9');
+INSERT INTO u_back_i.t_back_002i VALUES (1 , '9');
+INSERT INTO u_back_j.t_back_002j VALUES (1 , '9');
+INSERT INTO u_back_k.t_back_002k VALUES (1 , '9');
+INSERT INTO u_back_l.t_back_002l VALUES (1 , '9');
+INSERT INTO u_back_m.t_back_002m VALUES (1 , '9');
+
+//备份数据
+BACKUP USER u_back_a TO '/BACKUP/INTERVALUSER_BAK_a.EXP';
+BACKUP USER u_back_b TO '/BACKUP/INTERVALUSER_BAK_b.EXP';
+BACKUP USER u_back_c TO '/BACKUP/INTERVALUSER_BAK_c.EXP';
+BACKUP USER u_back_d TO '/BACKUP/INTERVALUSER_BAK_d.EXP';
+BACKUP USER u_back_e TO '/BACKUP/INTERVALUSER_BAK_e.EXP';
+BACKUP USER u_back_f TO '/BACKUP/INTERVALUSER_BAK_f.EXP';
+BACKUP USER u_back_g TO '/BACKUP/INTERVALUSER_BAK_g.EXP';
+BACKUP USER u_back_h TO '/BACKUP/INTERVALUSER_BAK_h.EXP';
+BACKUP USER u_back_i TO '/BACKUP/INTERVALUSER_BAK_i.EXP';
+BACKUP USER u_back_j TO '/BACKUP/INTERVALUSER_BAK_j.EXP';
+BACKUP USER u_back_k TO '/BACKUP/INTERVALUSER_BAK_k.EXP';
+BACKUP USER u_back_l TO '/BACKUP/INTERVALUSER_BAK_l.EXP';
+BACKUP USER u_back_m TO '/BACKUP/INTERVALUSER_BAK_m.EXP';
+
+//删除表
+DROP TABLE u_back_a.t_back_002a;
+DROP TABLE u_back_b.t_back_002b;
+DROP TABLE u_back_c.t_back_002c;
+DROP TABLE u_back_d.t_back_002d;
+DROP TABLE u_back_e.t_back_002e;
+DROP TABLE u_back_f.t_back_002f;
+DROP TABLE u_back_g.t_back_002g;
+DROP TABLE u_back_h.t_back_002h;
+DROP TABLE u_back_i.t_back_002i;
+DROP TABLE u_back_j.t_back_002j;
+DROP TABLE u_back_k.t_back_002k;
+DROP TABLE u_back_l.t_back_002l;
+DROP TABLE u_back_m.t_back_002m;
+
+//恢复数据
+RESTORE USER u_back_a FROM '/BACKUP/INTERVALUSER_BAK_a.EXP';
+RESTORE USER u_back_b FROM '/BACKUP/INTERVALUSER_BAK_b.EXP';
+RESTORE USER u_back_c FROM '/BACKUP/INTERVALUSER_BAK_c.EXP';
+RESTORE USER u_back_d FROM '/BACKUP/INTERVALUSER_BAK_d.EXP';
+RESTORE USER u_back_e FROM '/BACKUP/INTERVALUSER_BAK_e.EXP';
+RESTORE USER u_back_f FROM '/BACKUP/INTERVALUSER_BAK_f.EXP';
+RESTORE USER u_back_g FROM '/BACKUP/INTERVALUSER_BAK_g.EXP';
+RESTORE USER u_back_h FROM '/BACKUP/INTERVALUSER_BAK_h.EXP';
+RESTORE USER u_back_i FROM '/BACKUP/INTERVALUSER_BAK_i.EXP';
+RESTORE USER u_back_j FROM '/BACKUP/INTERVALUSER_BAK_j.EXP';
+RESTORE USER u_back_k FROM '/BACKUP/INTERVALUSER_BAK_k.EXP';
+RESTORE USER u_back_l FROM '/BACKUP/INTERVALUSER_BAK_l.EXP';
+RESTORE USER u_back_m FROM '/BACKUP/INTERVALUSER_BAK_m.EXP';
+
+//结果查询
+<预期结果 : 1 | 9-0>
+SELECT * FROM u_back_a.t_back_002a;
+<预期结果 : 1 | 0-9>
+SELECT * FROM u_back_b.t_back_002b;
+<预期结果 : 1 | 9 0:00:00>
+SELECT * FROM u_back_c.t_back_002c;
+<预期结果 : 1 | 9:00:00>
+SELECT * FROM u_back_d.t_back_002d;
+<预期结果 : 1 | 0:09:00>
+SELECT * FROM u_back_e.t_back_002e;
+<预期结果 : 1 | 0:00:09>
+SELECT * FROM u_back_f.t_back_002f;
+<预期结果 : 1 | 0-9>
+SELECT * FROM u_back_g.t_back_002g;
+<预期结果 : 1 | 9:00:00>
+SELECT * FROM u_back_h.t_back_002h;
+<预期结果 : 1 | 0:09:00>
+SELECT * FROM u_back_i.t_back_002i;
+<预期结果 : 1 | 0:00:09>
+SELECT * FROM u_back_j.t_back_002j;
+<预期结果 : 1 | 0:09:00>
+SELECT * FROM u_back_k.t_back_002k;
+<预期结果 : 1 | 0:00:09>
+SELECT * FROM u_back_l.t_back_002l;
+<预期结果 : 1 | 0:00:09>
+SELECT * FROM u_back_m.t_back_002m;
+
+//删除表
+DROP TABLE u_back_a.t_back_002a;
+DROP TABLE u_back_b.t_back_002b;
+DROP TABLE u_back_c.t_back_002c;
+DROP TABLE u_back_d.t_back_002d;
+DROP TABLE u_back_e.t_back_002e;
+DROP TABLE u_back_f.t_back_002f;
+DROP TABLE u_back_g.t_back_002g;
+DROP TABLE u_back_h.t_back_002h;
+DROP TABLE u_back_i.t_back_002i;
+DROP TABLE u_back_j.t_back_002j;
+DROP TABLE u_back_k.t_back_002k;
+DROP TABLE u_back_l.t_back_002l;
+DROP TABLE u_back_m.t_back_002m;
+
+!4 XG-TYPE-INTERVAL-BACKUP-003 模式级备份恢复
+//创建模式
+CREATE SCHEMA s_back_a AUTHORIZATION u_back_a;
+CREATE SCHEMA s_back_b AUTHORIZATION u_back_b;
+CREATE SCHEMA s_back_c AUTHORIZATION u_back_c;
+CREATE SCHEMA s_back_d AUTHORIZATION u_back_d;
+CREATE SCHEMA s_back_e AUTHORIZATION u_back_e;
+CREATE SCHEMA s_back_f AUTHORIZATION u_back_f;
+CREATE SCHEMA s_back_g AUTHORIZATION u_back_g;
+CREATE SCHEMA s_back_h AUTHORIZATION u_back_h;
+CREATE SCHEMA s_back_i AUTHORIZATION u_back_i;
+CREATE SCHEMA s_back_j AUTHORIZATION u_back_j;
+CREATE SCHEMA s_back_k AUTHORIZATION u_back_k;
+CREATE SCHEMA s_back_l AUTHORIZATION u_back_l;
+CREATE SCHEMA s_back_m AUTHORIZATION u_back_m;
+
+//创建表
+CREATE TABLE s_back_a.t_back_003a (id INT , c1 INTERVAL YEAR);
+CREATE TABLE s_back_b.t_back_003b (id INT , c1 INTERVAL MONTH);
+CREATE TABLE s_back_c.t_back_003c (id INT , c1 INTERVAL DAY);
+CREATE TABLE s_back_d.t_back_003d (id INT , c1 INTERVAL HOUR);
+CREATE TABLE s_back_e.t_back_003e (id INT , c1 INTERVAL MINUTE);
+CREATE TABLE s_back_f.t_back_003f (id INT , c1 INTERVAL SECOND);
+CREATE TABLE s_back_g.t_back_003g (id INT , c1 INTERVAL YEAR TO MONTH);
+CREATE TABLE s_back_h.t_back_003h (id INT , c1 INTERVAL DAY TO HOUR);
+CREATE TABLE s_back_i.t_back_003i (id INT , c1 INTERVAL DAY TO MINUTE);
+CREATE TABLE s_back_j.t_back_003j (id INT , c1 INTERVAL DAY TO SECOND);
+CREATE TABLE s_back_k.t_back_003k (id INT , c1 INTERVAL HOUR TO MINUTE);
+CREATE TABLE s_back_l.t_back_003l (id INT , c1 INTERVAL HOUR TO SECOND);
+CREATE TABLE s_back_m.t_back_003m (id INT , c1 INTERVAL MINUTE TO SECOND);
+
+//插入数据
+INSERT INTO s_back_a.t_back_003a VALUES (1 , '9');
+INSERT INTO s_back_b.t_back_003b VALUES (1 , '9');
+INSERT INTO s_back_c.t_back_003c VALUES (1 , '9');
+INSERT INTO s_back_d.t_back_003d VALUES (1 , '9');
+INSERT INTO s_back_e.t_back_003e VALUES (1 , '9');
+INSERT INTO s_back_f.t_back_003f VALUES (1 , '9');
+INSERT INTO s_back_g.t_back_003g VALUES (1 , '9');
+INSERT INTO s_back_h.t_back_003h VALUES (1 , '9');
+INSERT INTO s_back_i.t_back_003i VALUES (1 , '9');
+INSERT INTO s_back_j.t_back_003j VALUES (1 , '9');
+INSERT INTO s_back_k.t_back_003k VALUES (1 , '9');
+INSERT INTO s_back_l.t_back_003l VALUES (1 , '9');
+INSERT INTO s_back_m.t_back_003m VALUES (1 , '9');
+
+//备份数据
+BACKUP SCHEMA s_back_a TO '/BACKUP/INTERVALSCH_BAK_a.EXP';
+BACKUP SCHEMA s_back_b TO '/BACKUP/INTERVALSCH_BAK_b.EXP';
+BACKUP SCHEMA s_back_c TO '/BACKUP/INTERVALSCH_BAK_c.EXP';
+BACKUP SCHEMA s_back_d TO '/BACKUP/INTERVALSCH_BAK_d.EXP';
+BACKUP SCHEMA s_back_e TO '/BACKUP/INTERVALSCH_BAK_e.EXP';
+BACKUP SCHEMA s_back_f TO '/BACKUP/INTERVALSCH_BAK_f.EXP';
+BACKUP SCHEMA s_back_g TO '/BACKUP/INTERVALSCH_BAK_g.EXP';
+BACKUP SCHEMA s_back_h TO '/BACKUP/INTERVALSCH_BAK_h.EXP';
+BACKUP SCHEMA s_back_i TO '/BACKUP/INTERVALSCH_BAK_i.EXP';
+BACKUP SCHEMA s_back_j TO '/BACKUP/INTERVALSCH_BAK_j.EXP';
+BACKUP SCHEMA s_back_k TO '/BACKUP/INTERVALSCH_BAK_k.EXP';
+BACKUP SCHEMA s_back_l TO '/BACKUP/INTERVALSCH_BAK_l.EXP';
+BACKUP SCHEMA s_back_m TO '/BACKUP/INTERVALSCH_BAK_m.EXP';
+
+//删除表
+DROP TABLE s_back_a.t_back_003a;
+DROP TABLE s_back_b.t_back_003b;
+DROP TABLE s_back_c.t_back_003c;
+DROP TABLE s_back_d.t_back_003d;
+DROP TABLE s_back_e.t_back_003e;
+DROP TABLE s_back_f.t_back_003f;
+DROP TABLE s_back_g.t_back_003g;
+DROP TABLE s_back_h.t_back_003h;
+DROP TABLE s_back_i.t_back_003i;
+DROP TABLE s_back_j.t_back_003j;
+DROP TABLE s_back_k.t_back_003k;
+DROP TABLE s_back_l.t_back_003l;
+DROP TABLE s_back_m.t_back_003m;
+
+//恢复数据
+RESTORE SCHEMA s_back_a FROM '/BACKUP/INTERVALSCH_BAK_a.EXP';
+RESTORE SCHEMA s_back_b FROM '/BACKUP/INTERVALSCH_BAK_b.EXP';
+RESTORE SCHEMA s_back_c FROM '/BACKUP/INTERVALSCH_BAK_c.EXP';
+RESTORE SCHEMA s_back_d FROM '/BACKUP/INTERVALSCH_BAK_d.EXP';
+RESTORE SCHEMA s_back_e FROM '/BACKUP/INTERVALSCH_BAK_e.EXP';
+RESTORE SCHEMA s_back_f FROM '/BACKUP/INTERVALSCH_BAK_f.EXP';
+RESTORE SCHEMA s_back_g FROM '/BACKUP/INTERVALSCH_BAK_g.EXP';
+RESTORE SCHEMA s_back_h FROM '/BACKUP/INTERVALSCH_BAK_h.EXP';
+RESTORE SCHEMA s_back_i FROM '/BACKUP/INTERVALSCH_BAK_i.EXP';
+RESTORE SCHEMA s_back_j FROM '/BACKUP/INTERVALSCH_BAK_j.EXP';
+RESTORE SCHEMA s_back_k FROM '/BACKUP/INTERVALSCH_BAK_k.EXP';
+RESTORE SCHEMA s_back_l FROM '/BACKUP/INTERVALSCH_BAK_l.EXP';
+RESTORE SCHEMA s_back_m FROM '/BACKUP/INTERVALSCH_BAK_m.EXP';
+
+//结果查询
+<预期结果 : 1 | 9-0>
+SELECT * FROM s_back_a.t_back_003a;
+<预期结果 : 1 | 0-9>
+SELECT * FROM s_back_b.t_back_003b;
+<预期结果 : 1 | 9 0:00:00>
+SELECT * FROM s_back_c.t_back_003c;
+<预期结果 : 1 | 9:00:00>
+SELECT * FROM s_back_d.t_back_003d;
+<预期结果 : 1 | 0:09:00>
+SELECT * FROM s_back_e.t_back_003e;
+<预期结果 : 1 | 0:00:09>
+SELECT * FROM s_back_f.t_back_003f;
+<预期结果 : 1 | 0-9>
+SELECT * FROM s_back_g.t_back_003g;
+<预期结果 : 1 | 9:00:00>
+SELECT * FROM s_back_h.t_back_003h;
+<预期结果 : 1 | 0:09:00>
+SELECT * FROM s_back_i.t_back_003i;
+<预期结果 : 1 | 0:00:09>
+SELECT * FROM s_back_j.t_back_003j;
+<预期结果 : 1 | 0:09:00>
+SELECT * FROM s_back_k.t_back_003k;
+<预期结果 : 1 | 0:00:09>
+SELECT * FROM s_back_l.t_back_003l;
+<预期结果 : 1 | 0:00:09>
+SELECT * FROM s_back_m.t_back_003m;
+
+//删除模式
+DROP SCHEMA s_back_a;
+DROP SCHEMA s_back_b;
+DROP SCHEMA s_back_c;
+DROP SCHEMA s_back_d;
+DROP SCHEMA s_back_e;
+DROP SCHEMA s_back_f;
+DROP SCHEMA s_back_g;
+DROP SCHEMA s_back_h;
+DROP SCHEMA s_back_i;
+DROP SCHEMA s_back_j;
+DROP SCHEMA s_back_k;
+DROP SCHEMA s_back_l;
+DROP SCHEMA s_back_m;
+
+!4 XG-TYPE-INTERVAL-BACKUP-004 表级备份恢复
+//创建表
+CREATE TABLE t_back_004a (id INT , c1 INTERVAL YEAR);
+CREATE TABLE t_back_004b (id INT , c1 INTERVAL MONTH);
+CREATE TABLE t_back_004c (id INT , c1 INTERVAL DAY);
+CREATE TABLE t_back_004d (id INT , c1 INTERVAL HOUR);
+CREATE TABLE t_back_004e (id INT , c1 INTERVAL MINUTE);
+CREATE TABLE t_back_004f (id INT , c1 INTERVAL SECOND);
+CREATE TABLE t_back_004g (id INT , c1 INTERVAL YEAR TO MONTH);
+CREATE TABLE t_back_004h (id INT , c1 INTERVAL DAY TO HOUR);
+CREATE TABLE t_back_004i (id INT , c1 INTERVAL DAY TO MINUTE);
+CREATE TABLE t_back_004j (id INT , c1 INTERVAL DAY TO SECOND);
+CREATE TABLE t_back_004k (id INT , c1 INTERVAL HOUR TO MINUTE);
+CREATE TABLE t_back_004l (id INT , c1 INTERVAL HOUR TO SECOND);
+CREATE TABLE t_back_004m (id INT , c1 INTERVAL MINUTE TO SECOND);
+
+//插入数据
+INSERT INTO t_back_004a VALUES (1 , '9');
+INSERT INTO t_back_004b VALUES (1 , '9');
+INSERT INTO t_back_004c VALUES (1 , '9');
+INSERT INTO t_back_004d VALUES (1 , '9');
+INSERT INTO t_back_004e VALUES (1 , '9');
+INSERT INTO t_back_004f VALUES (1 , '9');
+INSERT INTO t_back_004g VALUES (1 , '9');
+INSERT INTO t_back_004h VALUES (1 , '9');
+INSERT INTO t_back_004i VALUES (1 , '9');
+INSERT INTO t_back_004j VALUES (1 , '9');
+INSERT INTO t_back_004k VALUES (1 , '9');
+INSERT INTO t_back_004l VALUES (1 , '9');
+INSERT INTO t_back_004m VALUES (1 , '9');
+
+//备份数据
+BACKUP TABLE t_back_004a TO '/BACKUP/INTERVALTABLE_BAK_a.EXP';
+BACKUP TABLE t_back_004b TO '/BACKUP/INTERVALTABLE_BAK_b.EXP';
+BACKUP TABLE t_back_004c TO '/BACKUP/INTERVALTABLE_BAK_c.EXP';
+BACKUP TABLE t_back_004d TO '/BACKUP/INTERVALTABLE_BAK_d.EXP';
+BACKUP TABLE t_back_004e TO '/BACKUP/INTERVALTABLE_BAK_e.EXP';
+BACKUP TABLE t_back_004f TO '/BACKUP/INTERVALTABLE_BAK_f.EXP';
+BACKUP TABLE t_back_004g TO '/BACKUP/INTERVALTABLE_BAK_g.EXP';
+BACKUP TABLE t_back_004h TO '/BACKUP/INTERVALTABLE_BAK_h.EXP';
+BACKUP TABLE t_back_004i TO '/BACKUP/INTERVALTABLE_BAK_i.EXP';
+BACKUP TABLE t_back_004j TO '/BACKUP/INTERVALTABLE_BAK_j.EXP';
+BACKUP TABLE t_back_004k TO '/BACKUP/INTERVALTABLE_BAK_k.EXP';
+BACKUP TABLE t_back_004l TO '/BACKUP/INTERVALTABLE_BAK_l.EXP';
+BACKUP TABLE t_back_004m TO '/BACKUP/INTERVALTABLE_BAK_m.EXP';
+
+//删除表
+DROP TABLE t_back_004a;
+DROP TABLE t_back_004b;
+DROP TABLE t_back_004c;
+DROP TABLE t_back_004d;
+DROP TABLE t_back_004e;
+DROP TABLE t_back_004f;
+DROP TABLE t_back_004g;
+DROP TABLE t_back_004h;
+DROP TABLE t_back_004i;
+DROP TABLE t_back_004j;
+DROP TABLE t_back_004k;
+DROP TABLE t_back_004l;
+DROP TABLE t_back_004m;
+
+//恢复数据
+RESTORE TABLE t_back_004a FROM '/BACKUP/INTERVALTABLE_BAK_a.EXP';
+RESTORE TABLE t_back_004b FROM '/BACKUP/INTERVALTABLE_BAK_b.EXP';
+RESTORE TABLE t_back_004c FROM '/BACKUP/INTERVALTABLE_BAK_c.EXP';
+RESTORE TABLE t_back_004d FROM '/BACKUP/INTERVALTABLE_BAK_d.EXP';
+RESTORE TABLE t_back_004e FROM '/BACKUP/INTERVALTABLE_BAK_e.EXP';
+RESTORE TABLE t_back_004f FROM '/BACKUP/INTERVALTABLE_BAK_f.EXP';
+RESTORE TABLE t_back_004g FROM '/BACKUP/INTERVALTABLE_BAK_g.EXP';
+RESTORE TABLE t_back_004h FROM '/BACKUP/INTERVALTABLE_BAK_h.EXP';
+RESTORE TABLE t_back_004i FROM '/BACKUP/INTERVALTABLE_BAK_i.EXP';
+RESTORE TABLE t_back_004j FROM '/BACKUP/INTERVALTABLE_BAK_j.EXP';
+RESTORE TABLE t_back_004k FROM '/BACKUP/INTERVALTABLE_BAK_k.EXP';
+RESTORE TABLE t_back_004l FROM '/BACKUP/INTERVALTABLE_BAK_l.EXP';
+RESTORE TABLE t_back_004m FROM '/BACKUP/INTERVALTABLE_BAK_m.EXP';
+
+//结果查询
+<预期结果 : 9-0>
+SELECT * FROM t_back_004a;
+<预期结果 : 0-9>
+SELECT * FROM t_back_004b;
+<预期结果 : 9 0:00:00>
+SELECT * FROM t_back_004c;
+<预期结果 : 9:00:00>
+SELECT * FROM t_back_004d;
+<预期结果 : 0:09:00>
+SELECT * FROM t_back_004e;
+<预期结果 : 0:00:09>
+SELECT * FROM t_back_004f;
+<预期结果 : 0-9>
+SELECT * FROM t_back_004g;
+<预期结果 : 9:00:00>
+SELECT * FROM t_back_004h;
+<预期结果 : 0:09:00>
+SELECT * FROM t_back_004i;
+<预期结果 : 0:00:09>
+SELECT * FROM t_back_004j;
+<预期结果 : 0:09:00>
+SELECT * FROM t_back_004k;
+<预期结果 : 0:00:09>
+SELECT * FROM t_back_004l;
+<预期结果 : 0:00:09>
+SELECT * FROM t_back_004m;
+
+//删除表
+DROP TABLE t_back_004a;
+DROP TABLE t_back_004b;
+DROP TABLE t_back_004c;
+DROP TABLE t_back_004d;
+DROP TABLE t_back_004e;
+DROP TABLE t_back_004f;
+DROP TABLE t_back_004g;
+DROP TABLE t_back_004h;
+DROP TABLE t_back_004i;
+DROP TABLE t_back_004j;
+DROP TABLE t_back_004k;
+DROP TABLE t_back_004l;
+DROP TABLE t_back_004m;
+
+USE SYSTEM;
+
+//删除备份库
+DROP DATABASE DB_BACKUP;

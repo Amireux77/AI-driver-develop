@@ -1,0 +1,30 @@
+# 数据库连接配置（示例）
+# 复制为同目录 db.properties 并填写真实密码；勿提交 db.properties
+
+# MySQL
+mysql.url=jdbc:mysql://HOST:3306/DATABASE?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&characterEncoding=utf8&allowMultiQueries=true
+mysql.user=root
+mysql.password=CHANGE_ME
+mysql.driver=com.mysql.cj.jdbc.Driver
+
+# PostgreSQL
+pg.url=jdbc:postgresql://HOST:5432/DATABASE
+pg.user=pg
+pg.password=CHANGE_ME
+pg.driver=org.postgresql.Driver
+
+# Oracle
+oracle.url=jdbc:oracle:thin:@HOST:1521:SID_OR_SERVICE
+oracle.user=system
+oracle.password=CHANGE_ME
+oracle.driver=oracle.jdbc.OracleDriver
+
+# XuguDB
+xugu.url=jdbc:xugu://HOST:PORT/SYSTEM
+xugu.user=SYSDBA
+xugu.password=CHANGE_ME
+xugu.driver=com.xugu.cloudjdbc.Driver
+
+connect.timeout=10
+query.timeout=30
+continue.on.error=true

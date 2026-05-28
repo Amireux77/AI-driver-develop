@@ -1,0 +1,183 @@
+SET SESSION AUTHORIZATION SYSDBA;
+
+USE SYSTEM;
+
+!|bind current db connect|default|
+
+//创建审计数据库
+CREATE DATABASE DB_AUDIT;
+
+USE DB_AUDIT;
+
+//创建用户
+CREATE USER u_audit_a IDENTIFIED BY 'abc!1234';
+CREATE USER u_audit_b IDENTIFIED BY 'abc!1234';
+CREATE USER u_audit_c IDENTIFIED BY 'abc!1234';
+CREATE USER u_audit_d IDENTIFIED BY 'abc!1234';
+CREATE USER u_audit_e IDENTIFIED BY 'abc!1234';
+CREATE USER u_audit_f IDENTIFIED BY 'abc!1234';
+CREATE USER u_audit_g IDENTIFIED BY 'abc!1234';
+CREATE USER u_audit_h IDENTIFIED BY 'abc!1234';
+CREATE USER u_audit_i IDENTIFIED BY 'abc!1234';
+CREATE USER u_audit_j IDENTIFIED BY 'abc!1234';
+CREATE USER u_audit_k IDENTIFIED BY 'abc!1234';
+CREATE USER u_audit_l IDENTIFIED BY 'abc!1234';
+CREATE USER u_audit_m IDENTIFIED BY 'abc!1234';
+
+//开启审计
+SET enable_audit ON;
+
+//使用SYSAUDITOR连接数据库,开启审计表
+SET SESSION AUTHORIZATION SYSDBA;
+
+USE SYSTEM;
+
+!|bind current db connect|audit|
+
+USE DB_AUDIT;
+
+AUDIT TABLE;
+
+//使用SYSDBA连接数据库进行表操作
+!|bind current db connect|default|
+
+USE DB_AUDIT;
+
+//创建表
+CREATE TABLE t_audit_a (id INT , c1 INTERVAL YEAR);
+CREATE TABLE t_audit_b (id INT , c1 INTERVAL MONTH);
+CREATE TABLE t_audit_c (id INT , c1 INTERVAL DAY);
+CREATE TABLE t_audit_d (id INT , c1 INTERVAL HOUR);
+CREATE TABLE t_audit_e (id INT , c1 INTERVAL MINUTE);
+CREATE TABLE t_audit_f (id INT , c1 INTERVAL SECOND);
+CREATE TABLE t_audit_g (id INT , c1 INTERVAL YEAR TO MONTH);
+CREATE TABLE t_audit_h (id INT , c1 INTERVAL DAY TO HOUR);
+CREATE TABLE t_audit_i (id INT , c1 INTERVAL DAY TO MINUTE);
+CREATE TABLE t_audit_j (id INT , c1 INTERVAL DAY TO SECOND);
+CREATE TABLE t_audit_k (id INT , c1 INTERVAL HOUR TO MINUTE);
+CREATE TABLE t_audit_l (id INT , c1 INTERVAL HOUR TO SECOND);
+CREATE TABLE t_audit_m (id INT , c1 INTERVAL MINUTE TO SECOND);
+
+//再次创建表
+CREATE TABLE t_audit_a (id INT , c1 INTERVAL YEAR);
+CREATE TABLE t_audit_b (id INT , c1 INTERVAL MONTH);
+CREATE TABLE t_audit_c (id INT , c1 INTERVAL DAY);
+CREATE TABLE t_audit_d (id INT , c1 INTERVAL HOUR);
+CREATE TABLE t_audit_e (id INT , c1 INTERVAL MINUTE);
+CREATE TABLE t_audit_f (id INT , c1 INTERVAL SECOND);
+CREATE TABLE t_audit_g (id INT , c1 INTERVAL YEAR TO MONTH);
+CREATE TABLE t_audit_h (id INT , c1 INTERVAL DAY TO HOUR);
+CREATE TABLE t_audit_i (id INT , c1 INTERVAL DAY TO MINUTE);
+CREATE TABLE t_audit_j (id INT , c1 INTERVAL DAY TO SECOND);
+CREATE TABLE t_audit_k (id INT , c1 INTERVAL HOUR TO MINUTE);
+CREATE TABLE t_audit_l (id INT , c1 INTERVAL HOUR TO SECOND);
+CREATE TABLE t_audit_m (id INT , c1 INTERVAL MINUTE TO SECOND);
+
+//修改表 : 设置默认值
+ALTER TABLE t_audit_a ALTER COLUMN c1 SET DEFAULT '9-0';
+ALTER TABLE t_audit_b ALTER COLUMN c1 SET DEFAULT '0-9';
+ALTER TABLE t_audit_c ALTER COLUMN c1 SET DEFAULT '9 0:00:00';
+ALTER TABLE t_audit_d ALTER COLUMN c1 SET DEFAULT '9:00:00';
+ALTER TABLE t_audit_e ALTER COLUMN c1 SET DEFAULT '0:09:00';
+ALTER TABLE t_audit_f ALTER COLUMN c1 SET DEFAULT '0:00:09';
+ALTER TABLE t_audit_g ALTER COLUMN c1 SET DEFAULT '0-9';
+ALTER TABLE t_audit_h ALTER COLUMN c1 SET DEFAULT '9:00:00';
+ALTER TABLE t_audit_i ALTER COLUMN c1 SET DEFAULT '0:09:00';
+ALTER TABLE t_audit_j ALTER COLUMN c1 SET DEFAULT '0:00:09';
+ALTER TABLE t_audit_k ALTER COLUMN c1 SET DEFAULT '0:09:00';
+ALTER TABLE t_audit_l ALTER COLUMN c1 SET DEFAULT '0:00:09';
+ALTER TABLE t_audit_m ALTER COLUMN c1 SET DEFAULT '0:00:09';
+
+//修改表 : 设置取消默认值
+ALTER TABLE t_audit_a ALTER COLUMN c1 DROP DEFAULT;
+ALTER TABLE t_audit_b ALTER COLUMN c1 DROP DEFAULT;
+ALTER TABLE t_audit_c ALTER COLUMN c1 DROP DEFAULT;
+ALTER TABLE t_audit_d ALTER COLUMN c1 DROP DEFAULT;
+ALTER TABLE t_audit_e ALTER COLUMN c1 DROP DEFAULT;
+ALTER TABLE t_audit_f ALTER COLUMN c1 DROP DEFAULT;
+ALTER TABLE t_audit_g ALTER COLUMN c1 DROP DEFAULT;
+ALTER TABLE t_audit_h ALTER COLUMN c1 DROP DEFAULT;
+ALTER TABLE t_audit_i ALTER COLUMN c1 DROP DEFAULT;
+ALTER TABLE t_audit_j ALTER COLUMN c1 DROP DEFAULT;
+ALTER TABLE t_audit_k ALTER COLUMN c1 DROP DEFAULT;
+ALTER TABLE t_audit_l ALTER COLUMN c1 DROP DEFAULT;
+ALTER TABLE t_audit_m ALTER COLUMN c1 DROP DEFAULT;
+
+//插入数据
+INSERT INTO t_audit_a VALUES (1, ' 9') , (2 , '8') , (3 , '7');
+INSERT INTO t_audit_b VALUES (1, ' 9') , (2 , '8') , (3 , '7');
+INSERT INTO t_audit_c VALUES (1, ' 9') , (2 , '8') , (3 , '7');
+INSERT INTO t_audit_d VALUES (1, ' 9') , (2 , '8') , (3 , '7');
+INSERT INTO t_audit_e VALUES (1, ' 9') , (2 , '8') , (3 , '7');
+INSERT INTO t_audit_f VALUES (1, ' 9') , (2 , '8') , (3 , '7');
+INSERT INTO t_audit_g VALUES (1, ' 9') , (2 , '8') , (3 , '7');
+INSERT INTO t_audit_h VALUES (1, ' 9') , (2 , '8') , (3 , '7');
+INSERT INTO t_audit_i VALUES (1, ' 9') , (2 , '8') , (3 , '7');
+INSERT INTO t_audit_j VALUES (1, ' 9') , (2 , '8') , (3 , '7');
+INSERT INTO t_audit_k VALUES (1, ' 9') , (2 , '8') , (3 , '7');
+INSERT INTO t_audit_l VALUES (1, ' 9') , (2 , '8') , (3 , '7');
+INSERT INTO t_audit_m VALUES (1, ' 9') , (2 , '8') , (3 , '7');
+
+//清空表
+TRUNCATE t_audit_a;
+TRUNCATE t_audit_b;
+TRUNCATE t_audit_c;
+TRUNCATE t_audit_d;
+TRUNCATE t_audit_e;
+TRUNCATE t_audit_f;
+TRUNCATE t_audit_g;
+TRUNCATE t_audit_h;
+TRUNCATE t_audit_i;
+TRUNCATE t_audit_j;
+TRUNCATE t_audit_k;
+TRUNCATE t_audit_l;
+TRUNCATE t_audit_m;
+
+//删除表
+DROP TABLE t_audit_a;
+DROP TABLE t_audit_b;
+DROP TABLE t_audit_c;
+DROP TABLE t_audit_d;
+DROP TABLE t_audit_e;
+DROP TABLE t_audit_f;
+DROP TABLE t_audit_g;
+DROP TABLE t_audit_h;
+DROP TABLE t_audit_i;
+DROP TABLE t_audit_j;
+DROP TABLE t_audit_k;
+DROP TABLE t_audit_l;
+DROP TABLE t_audit_m;
+
+//再次删除表
+DROP TABLE t_audit_a;
+DROP TABLE t_audit_b;
+DROP TABLE t_audit_c;
+DROP TABLE t_audit_d;
+DROP TABLE t_audit_e;
+DROP TABLE t_audit_f;
+DROP TABLE t_audit_g;
+DROP TABLE t_audit_h;
+DROP TABLE t_audit_i;
+DROP TABLE t_audit_j;
+DROP TABLE t_audit_k;
+DROP TABLE t_audit_l;
+DROP TABLE t_audit_m;
+
+COMMIT;
+
+SET SESSION AUTHORIZATION SYSDBA;
+
+USE SYSTEM;
+
+!|bind current db connect|audit|
+
+USE DB_AUDIT;
+
+//结果查询
+SELECT OBJ_NAME , TO_CHAR(SUCCESS) AS SUCCESS , SQL_TEXT , TO_CHAR(ERR_INFO) AS ERR_INFO FROM SYS_AUDIT_RESULTS;
+
+USE SYSTEM;
+
+!|bind current db connect|default|
+
+DROP DATABASE DB_AUDIT;

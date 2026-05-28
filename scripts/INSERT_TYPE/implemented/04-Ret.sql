@@ -1,0 +1,43 @@
+!4 XG-TYPE-INSERT-RET-001 INSERT … RETURNING … INTO 单行
+CREATE TABLE t_ins_ret_001 (id INT PRIMARY KEY , val VARCHAR(50) , status VARCHAR(10));
+DECLARE v_id INT;
+DECLARE v_val VARCHAR(50);
+BEGIN
+  INSERT INTO t_ins_ret_001 VALUES (1 , 'ok' , 'ACTIVE') RETURNING id , val INTO v_id , v_val;
+END;
+/
+
+<预期结果 : ok>
+SELECT val FROM t_ins_ret_001 WHERE id = 1;
+DROP TABLE t_ins_ret_001;
+
+
+!4 XG-TYPE-INSERT-RET-002 INSERT … RETURNING BULK COLLECT INTO
+CREATE TABLE t_ins_ret_002 (id INT PRIMARY KEY , val VARCHAR(50) , status VARCHAR(10));
+DECLARE TYPE id_tab IS TABLE OF INT;
+DECLARE TYPE val_tab IS TABLE OF VARCHAR(50);
+DECLARE ids id_tab;
+DECLARE vals val_tab;
+BEGIN
+  INSERT INTO t_ins_ret_002 VALUES (1 , 'ok' , 'ACTIVE') , (2 , 'ready' , 'INACTIVE') RETURNING id , val BULK COLLECT INTO ids , vals;
+END;
+/
+
+<预期结果 : 2>
+SELECT COUNT(*) FROM t_ins_ret_002;
+DROP TABLE t_ins_ret_002;
+
+
+!4 XG-TYPE-INSERT-RET-004 SQL%ROWCOUNT 与插入行数
+CREATE TABLE t_ins_ret_004 (id INT PRIMARY KEY , val VARCHAR(50) , status VARCHAR(10));
+BEGIN
+  INSERT INTO t_ins_ret_004 VALUES (1 , 'ok' , 'ACTIVE');
+  IF SQL%ROWCOUNT <> 1 THEN
+    RAISE_APPLICATION_ERROR(-20000 , 'ROWCOUNT MISMATCH');
+  END IF;
+END;
+/
+
+<预期结果 : 1>
+SELECT COUNT(*) FROM t_ins_ret_004;
+DROP TABLE t_ins_ret_004;
